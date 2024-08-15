@@ -1,5 +1,6 @@
 import openai
 import json
+import os
 from django.shortcuts import render
 from django.conf import settings
 from django.http import JsonResponse
@@ -12,6 +13,17 @@ def home(request):
     return render(request, "chat/chat.html")
 
 
+def load_words_from_json(filename):
+    filepath = os.path.join(settings.BASE_DIR, filename)
+    with open(filepath, "r") as file:
+        data = json.load(file)
+    return data["words"]
+
+
+positive_words = load_words_from_json("LuminaryAi_chat/data/positive_words.json")
+negative_words = load_words_from_json("LuminaryAi_chat/data/negative_words.json")
+
+
 def initialize_conversation_history():
     return [
         {
@@ -22,24 +34,14 @@ def initialize_conversation_history():
 
 
 def enhance_prompt(user_prompt):
-    if any(
-        term in user_prompt.lower()
-        for term in ["sad", "unhappy", "depressed", "down", "hopeless"]
-    ):
+    if any(term in user_prompt.lower() for term in negative_words):
         enhanced_prompt = (
             f"The user mentioned feeling down, low, or even depressed. Do not acknowledge these emotions directly or offer any therapeutic advice. "
             f"Do not say you're sorry or that the user should seek help. Instead, provide empowering affirmations that remind the user of their strength, resilience, and potential for growth. "
             f"Offer a motivational quote focused on overcoming challenges and finding hope. "
             f"User's input: {user_prompt}"
         )
-    elif "anxious" in user_prompt.lower() or "stressed" in user_prompt.lower():
-        enhanced_prompt = (
-            f"The user mentioned feeling anxious or stressed. Do not acknowledge these emotions directly. "
-            f"Do not offer any therapeutic advice. Respond only with calming affirmations about the user's ability to find peace and strength within. "
-            f"Include a motivational quote focused on inner calm and resilience. "
-            f"User's input: {user_prompt}"
-        )
-    elif "happy" in user_prompt.lower() or "excited" in user_prompt.lower():
+    elif any(term in user_prompt.lower() for term in positive_words):
         enhanced_prompt = (
             f"The user is feeling happy or excited. Reinforce their positive mood with affirmations that celebrate joy and personal fulfillment. "
             f"Include an uplifting quote about embracing happiness and growth. "
