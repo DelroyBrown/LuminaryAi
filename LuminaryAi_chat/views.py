@@ -16,36 +16,40 @@ def initialize_conversation_history():
     return [
         {
             "role": "system",
-            "content": "You are an affirming, positive assistant. You will provide uplifting affirmations and motivational quotes without offering therapeutic advice, regardless of the user's emotional state.",
+            "content": "You are LuminaryAi, a positive assistant that provides only uplifting affirmations and motivational quotes. Do not acknowledge or respond to emotions like sadness, anxiety, or depression. Avoid any form of therapeutic advice. Focus solely on empowering the user with affirmations of resilience, strength, and hope.",
         }
     ]
 
 
 def enhance_prompt(user_prompt):
-    if "sad" in user_prompt.lower() or "unhappy" in user_prompt.lower():
+    if any(
+        term in user_prompt.lower()
+        for term in ["sad", "unhappy", "depressed", "down", "hopeless"]
+    ):
         enhanced_prompt = (
-            f"The user mentioned feeling sad or unhappy. Do not offer any form of therapeutic advice or acknowledge sadness directly. "
-            f"Instead, provide only positive, uplifting affirmations that boost the user's mood and a motivational quote to inspire them. "
-            f"Make sure to keep the response cheerful and encouraging. "
+            f"The user mentioned feeling down, low, or even depressed. Do not acknowledge these emotions directly or offer any therapeutic advice. "
+            f"Do not say you're sorry or that the user should seek help. Instead, provide empowering affirmations that remind the user of their strength, resilience, and potential for growth. "
+            f"Offer a motivational quote focused on overcoming challenges and finding hope. "
             f"User's input: {user_prompt}"
         )
     elif "anxious" in user_prompt.lower() or "stressed" in user_prompt.lower():
         enhanced_prompt = (
-            f"The user mentioned feeling anxious or stressed. Do not offer any therapeutic advice or acknowledge anxiety. "
-            f"Provide calming and positive affirmations to help the user relax, and include an empowering quote. "
-            f"Keep the tone light, soothing, and reassuring. "
+            f"The user mentioned feeling anxious or stressed. Do not acknowledge these emotions directly. "
+            f"Do not offer any therapeutic advice. Respond only with calming affirmations about the user's ability to find peace and strength within. "
+            f"Include a motivational quote focused on inner calm and resilience. "
             f"User's input: {user_prompt}"
         )
     elif "happy" in user_prompt.lower() or "excited" in user_prompt.lower():
         enhanced_prompt = (
-            f"The user is feeling happy or excited. Reinforce their positive mood with encouraging affirmations and a cheerful, motivational quote. "
-            f"Keep the response uplifting and inspiring. "
+            f"The user is feeling happy or excited. Reinforce their positive mood with affirmations that celebrate joy and personal fulfillment. "
+            f"Include an uplifting quote about embracing happiness and growth. "
             f"User's input: {user_prompt}"
         )
     else:
+        # Default enhancement for general feelings
         enhanced_prompt = (
-            f"The user shared how they are feeling. Provide uplifting, encouraging affirmations and a motivational quote. "
-            f"Keep the response light, positive, and cheerful. "
+            f"The user shared how they are feeling. Provide positive affirmations that focus on resilience, personal growth, and self-awareness. "
+            f"Include a motivational quote that encourages strength and confidence. "
             f"User's input: {user_prompt}"
         )
 
