@@ -21,7 +21,7 @@
 
 
                 <!-- PAGE HEADER -->
-                <div id="page-header"
+                <div id="page-header" style="height: 100dvh;"
                     class="ph-full ph-center ph-bg-image ph-image-shadow ph-image-cover-5 ph-content-parallax">
                     <div class="page-header-inner tt-wrap">
 
@@ -31,8 +31,11 @@
                             </div>
                         </div>
                         <div class="ph-caption">
-                            <div class="ph-categories ph-appear">
-                                <div class="ph-category" style="">Branding</div>
+                            <div class="ph-categories">
+                                <div class="ph-category ph-appear">
+                                    <img style="height: 150px !important;" src="{% static 'images/logo.png' %}"
+                                        class="tt-logo-light" alt="Logo">
+                                </div>
                             </div>
 
                             <h2 class="ph-caption-title ph-appear">LuminaryAi</h2>
@@ -41,7 +44,7 @@
                         <div class="project-info-list anim-fadeinup">
                             <div class="tt-section-inner tt-wrap max-width-1000">
 
-                                <div class="anim-fadeinup text-gray font-alter text-lg text-center">
+                                <div class="ph-appear text-gray font-alter text-lg text-center">
                                     <p>LuminaryAi is something I built to help people feel a bit better when they need
                                         it. You just share how you're feeling, and the app gives you a positive,
                                         personalized affirmation or quote. It's a simple way to bring a little
@@ -119,12 +122,12 @@
                 <div id="page-content">
 
 
-              
+
 
                     <!-- FORM -->
                     {% include 'chat/includes/form.html' %}
 
-                  
+
 
                 </div>
 

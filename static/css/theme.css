@@ -1818,8 +1818,8 @@ body:not(.tt-boxed) .page-header-inner, .page-header-inner:not(.tt-wrap) {
 /* page header caption category */
 .ph-categories {
     position: relative;
-    margin-bottom: 15px;
     z-index: 9;
+    height: 120px;
 }
 .ph-category {
     position: relative;
