@@ -30,9 +30,13 @@
     }
 
     .motivational-quote {
-        color: #FF6347;
-        font-weight: bold;
+        color: #B5EAD7;
+        font-weight: lighter;
         font-style: italic;
+    }
+
+    .ai-response p {
+        font-weight: 200;
     }
 
 
@@ -120,7 +124,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
-
     $('#promptForm').on('submit', function (e) {
         e.preventDefault();
 
@@ -150,9 +153,9 @@
             success: function (data) {
                 let response = data.response;
 
-                // Replace the custom markers with a span to highlight the motivational quote
-                response = response.replace('##quote_start##', '<br><span class="motivational-quote">');
-                response = response.replace('##quote_end##', '</span><br>');
+                // Replace the custom markers with a span to highlight the Bible verse
+                response = response.replace('##quote_start##', '<br><br><span class="motivational-quote">');
+                response = response.replace('##quote_end##', '</span><br><br>');
 
                 // Display the assistant's response in the chat window with fade-in class
                 $('#chatWindow').append(`
@@ -172,5 +175,4 @@
             }
         });
     });
-
 </script>

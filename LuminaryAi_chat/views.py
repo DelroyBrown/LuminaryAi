@@ -35,19 +35,20 @@ def initialize_conversation_history():
 
 
 def enhance_prompt(user_prompt):
+    # Replace the motivational quote request with a request for a Bible verse
     if any(term in user_prompt.lower() for term in negative_words):
         enhanced_prompt = (
             f"The user mentioned feeling sad, down, or unhappy. Start the response by acknowledging their feelings with empathy, "
             f"such as 'I'm sorry you're feeling this way' or 'It's okay to feel like this sometimes.' "
             f"Then, provide an uplifting message focusing on resilience, strength, and hope. "
-            f"Include a motivational quote between ##quote_start## and ##quote_end## about overcoming challenges. "
+            f"Include a Bible verse from the King James Version (KJV) for comfort between ##quote_start## and ##quote_end##. "
             f"User's input: {user_prompt}"
         )
     elif any(term in user_prompt.lower() for term in positive_words):
         enhanced_prompt = (
             f"The user is feeling happy or excited. Start the response by celebrating their positive mood, such as 'That's wonderful to hear!' or 'I'm so glad you're feeling this way!' "
             f"Then, continue with affirmations about embracing joy and personal fulfillment. "
-            f"Include a motivational quote between ##quote_start## and ##quote_end## about embracing happiness and growth. "
+            f"Include a Bible verse from the King James Version (KJV) about happiness and joy between ##quote_start## and ##quote_end##. "
             f"User's input: {user_prompt}"
         )
     else:
@@ -56,7 +57,7 @@ def enhance_prompt(user_prompt):
             f"The user shared how they are feeling. Start by acknowledging their feelings in a neutral and empathetic tone, "
             f"such as 'I hear you' or 'It's okay to feel that way.' "
             f"Then, provide affirmations focusing on positivity, resilience, and personal growth. "
-            f"Include a motivational quote between ##quote_start## and ##quote_end## that encourages strength and confidence. "
+            f"Include a Bible verse from the King James Version (KJV) for strength and confidence between ##quote_start## and ##quote_end##. "
             f"User's input: {user_prompt}"
         )
 
@@ -73,6 +74,7 @@ def get_gpt_response(request):
             if not user_prompt:
                 return JsonResponse({"error": "Prompt is required"}, status=400)
 
+            # Modify the prompt to request a Bible verse in the response
             enhanced_prompt = enhance_prompt(user_prompt)
 
             if "conversation" not in request.session:
@@ -82,6 +84,7 @@ def get_gpt_response(request):
                 {"role": "user", "content": enhanced_prompt}
             )
 
+            # Send the enhanced prompt to ChatGPT
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=request.session["conversation"],

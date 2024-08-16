@@ -4,6 +4,7 @@
 /* Table of Content ==================== * General * Fonts * Page transitions * Page boxed layout * Body inner * Content wrap * Page content * Custom scrollbar style * Smooth Scrollbar * Magic cursor * tt-Section * Headings * tt-Headings (custom headings) * Header * Header tools * Classic menu * Overlay menu * Page header * tt-Grid * Portfolio grid * Portfolio List * Portfolio interactive * Portfolio slider (full screen) * Portfolio carousel * Portfolio hover carousel * tt-Gallery * Lightgallery (lightbox plugin) * Page nav * Logo wall * tt-Image * Content carousel * Testimonials slider * Buttons * Social buttons * tt-Accordion * Table * tt-Tabs * Magnetic wrap * Blockquote * Figure * Forms * Contact info * Background video * Background noise * tt-Embed * Scrolling text * Pagination (tt-pagination) * Sidebar (classic) * Sliding sidebar * Sidebar widgets * Blog list * Blog interactive * Blog single post * Footer */
 /* ------------------------------------------------------------- * * General 
 /* ------------------------------------------------------------- */
+
 * {
     box-sizing: border-box;
 }
