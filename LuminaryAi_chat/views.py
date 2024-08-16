@@ -1,3 +1,4 @@
+# LuminaryAi_chat\views.py
 import openai
 import json
 import os
@@ -38,14 +39,15 @@ def enhance_prompt(user_prompt):
         enhanced_prompt = (
             f"The user mentioned feeling sad, down, or unhappy. Start the response by acknowledging their feelings with empathy, "
             f"such as 'I'm sorry you're feeling this way' or 'It's okay to feel like this sometimes.' "
-            f"Then, do not offer any therapeutic advice or say they should seek help. Transition into an uplifting message, focusing on resilience, strength, and hope. "
-            f"Include a motivational quote about overcoming challenges. "
+            f"Then, provide an uplifting message focusing on resilience, strength, and hope. "
+            f"Include a motivational quote between ##quote_start## and ##quote_end## about overcoming challenges. "
             f"User's input: {user_prompt}"
         )
     elif any(term in user_prompt.lower() for term in positive_words):
         enhanced_prompt = (
             f"The user is feeling happy or excited. Start the response by celebrating their positive mood, such as 'That's wonderful to hear!' or 'I'm so glad you're feeling this way!' "
-            f"Then, continue with affirmations about embracing joy and personal fulfillment. Include a motivational quote about embracing happiness and growth. "
+            f"Then, continue with affirmations about embracing joy and personal fulfillment. "
+            f"Include a motivational quote between ##quote_start## and ##quote_end## about embracing happiness and growth. "
             f"User's input: {user_prompt}"
         )
     else:
@@ -53,7 +55,8 @@ def enhance_prompt(user_prompt):
         enhanced_prompt = (
             f"The user shared how they are feeling. Start by acknowledging their feelings in a neutral and empathetic tone, "
             f"such as 'I hear you' or 'It's okay to feel that way.' "
-            f"Then, provide affirmations focusing on positivity, resilience, and personal growth. Include a motivational quote that encourages strength and confidence. "
+            f"Then, provide affirmations focusing on positivity, resilience, and personal growth. "
+            f"Include a motivational quote between ##quote_start## and ##quote_end## that encourages strength and confidence. "
             f"User's input: {user_prompt}"
         )
 

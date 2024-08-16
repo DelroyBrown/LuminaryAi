@@ -1,3 +1,4 @@
+<!-- templates\chat\includes\form.html -->
 {% load static %}
 <style>
     .tt-chat-box {
@@ -7,7 +8,7 @@
         padding: 50px;
     }
 
-    .user-message {
+    /* .user-message {
         color: blue;
         text-align: left;
     }
@@ -15,6 +16,43 @@
     .assistant-message {
         color: green;
         text-align: left;
+    } */
+
+    .ai-response {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .response-img {
+        height: 100px;
+        width: 100px;
+    }
+
+    .motivational-quote {
+        color: #FF6347;
+        font-weight: bold;
+        font-style: italic;
+    }
+
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Apply animation to elements with this class */
+    .fade-in {
+        opacity: 0;
+        /* Initially hidden */
+        animation: fadeIn 1s ease forwards;
+        /* 1 second fade-in */
     }
 </style>
 <div style="margin: 100px 0 100px;" class="tt-section">
@@ -23,13 +61,6 @@
         <div class="tt-row">
             <div class="tt-col-lg-12 padding-right-lg-5-p">
 
-                <!-- Begin tt-Heading 
-                ====================== 
-                * Use class "tt-heading-xsm", "tt-heading-sm", "tt-heading-lg", "tt-heading-xlg" or "tt-heading-xxlg" to set caption size (no class = default size).
-                * Use class "tt-heading-stroke" to enable stroke style.
-                * Use class "tt-heading-center" to align tt-Heading to center.
-                * Use prepared helper class "max-width-*" to add custom width if needed. Example: "max-width-800". More info about helper classes can be found in the file "helper.css".
-                -->
                 <div class="tt-heading tt-heading-center tt-heading-lg anim-fadeinup" style="">
                     <h3 class="tt-heading-subtitle text-gray">(Put something here)</h3>
                     <h2 class="tt-heading-title">How Are You Feeling Today?</h2>
@@ -66,9 +97,19 @@
                 </form>
                 <!-- End form -->
 
+                <div class="tt-section padding-top-xlg-180 padding-left-sm-3-p padding-right-sm-3-p">
+                    <div class="tt-section-inner tt-wrap max-width-1000">
+
+                        <div id="chatWindow" class="anim-fadeinup font-alter text-xxlg text-center" style="">
+
+                        </div>
+
+                    </div>
+                </div>
+
 
                 <div id="chatWindow" class="tt-section padding-top-xlg-180 padding-left-sm-3-p padding-right-sm-3-p">
-         
+                    <!-- MESSAGES APPEARS HERE -->
                 </div>
 
             </div>
@@ -80,8 +121,6 @@
 
 <script>
 
-
-
     $('#promptForm').on('submit', function (e) {
         e.preventDefault();
 
@@ -91,32 +130,13 @@
             return;
         }
 
-        // Display the user's message in the chat window
-        $('#chatWindow').append(
-            // `<p class="user-message"><strong>User:</strong> ${prompt}</p>`
-            `<div class="tt-row anim-fadeinup">
-                            <div class="tt-col-lg-4 padding-right-md-5-p">
-
-                       
-                                <div class="tt-heading tt-heading-xsm margin-bottom-60 anim-fadeinup" style="">
-                                    <h2 class="tt-heading-title">You:</h2>
-                                    <!-- <h3 class="tt-heading-subtitle text-gray">Subtitle</h3> -->
-                                </div>
-                                <!-- End tt-Heading -->
-
-                            </div> <!-- /.tt-col -->
-
-                            <div class="tt-col-lg-8">
-
-                                <div class="anim-fadeinup text-gray" style="">
-                                    <p>${prompt}.</p>
-
-                                </div>
-
-                            </div> 
-                        </div>
-                        `
-        );
+        // Display the user's message in the chat window with fade-in class
+        $('#chatWindow').append(`
+            <div class="ai-response">
+                <small class="text-gray">You</small>
+                <p class="fade-in">${prompt}</p>
+            </div>
+        `);
 
         // Clear the input field after submission
         $('#prompt').val('');
@@ -128,33 +148,21 @@
             contentType: 'application/json',
             data: JSON.stringify({ prompt: prompt }),
             success: function (data) {
-                // Display the assistant's response in the chat window
-                $('#chatWindow').append(
-                    // `<p class="assistant-message"><strong>Assistant:</strong> ${data.response}</p>`
-                    `<div class="tt-row anim-fadeinup">
-                            <div class="tt-col-lg-4 padding-right-md-5-p">
+                let response = data.response;
 
-                       
-                                <div class="tt-heading tt-heading-xsm anim-fadeinup" style="">
-                                    <h2 class="tt-heading-title">LuminaryAi:</h2>
-                                    <!-- <h3 class="tt-heading-subtitle text-gray">Subtitle</h3> -->
-                                </div>
-                                <!-- End tt-Heading -->
+                // Replace the custom markers with a span to highlight the motivational quote
+                response = response.replace('##quote_start##', '<br><span class="motivational-quote">');
+                response = response.replace('##quote_end##', '</span><br>');
 
-                            </div> <!-- /.tt-col -->
-
-                            <div class="tt-col-lg-8">
-
-                                <div class="anim-fadeinup text-gray" style="">
-                                    <p>${data.response}.</p>
-
-                                </div>
-
-                            </div> 
-                        </div>
-                        <hr>
-                        `
-                );
+                // Display the assistant's response in the chat window with fade-in class
+                $('#chatWindow').append(`
+                    <div class="ai-response">
+                        <img class="response-img" src="{% static 'images/logo.png' %}">
+                        <small class="text-gray">LuminaryAi</small>
+                        <p class="fade-in">${response}</p>
+                    </div>
+                    <hr>
+                `);
 
                 // Automatically scroll to the bottom of the chat window
                 $('#chatWindow').scrollTop($('#chatWindow')[0].scrollHeight);
@@ -164,4 +172,5 @@
             }
         });
     });
+
 </script>
