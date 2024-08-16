@@ -1,0 +1,74 @@
+<!-- templates\chat\chat.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .user-message {
+        color: blue;
+        text-align: left;
+    }
+
+    .assistant-message {
+        color: green;
+        text-align: left;
+    }
+</style>
+
+<h1>Chat Page</h1>
+
+<div id="chatWindow" style="border: 1px solid #ccc; padding: 10px; width: 400px; height: 300px; overflow-y: scroll;">
+    <!-- All chat messages will appear here -->
+</div>
+
+<form id="promptForm" style="margin-top: 20px;">
+    <textarea id="prompt" rows="3" cols="40" placeholder="Enter your prompt here..."></textarea><br>
+    <button type="submit">Submit</button>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+
+
+
+    $('#promptForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const prompt = $('#prompt').val();  // Get the user's prompt
+        if (prompt.trim() === "") {
+            alert("Please enter a prompt!");
+            return;
+        }
+
+        // Display the user's message in the chat window
+        $('#chatWindow').append(
+            `<p class="user-message"><strong>User:</strong> ${prompt}</p>`
+        );
+
+        // Clear the input field after submission
+        $('#prompt').val('');
+
+        // Send the user's prompt to the backend
+        $.ajax({
+            url: '/chat/api/get_gpt_response/',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ prompt: prompt }),
+            success: function (data) {
+                // Display the assistant's response in the chat window
+                $('#chatWindow').append(
+                    `<p class="assistant-message"><strong>Assistant:</strong> ${data.response}</p>`
+                );
+
+                // Automatically scroll to the bottom of the chat window
+                $('#chatWindow').scrollTop($('#chatWindow')[0].scrollHeight);
+            },
+            error: function (error) {
+                alert('Error: ' + error.responseText);
+            }
+        });
+    });
+</script>
+
+{% endblock %}

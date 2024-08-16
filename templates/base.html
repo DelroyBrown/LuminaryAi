@@ -1,19 +1,55 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LuminaryAi</title>
+    <link rel="stylesheet" href="{% static 'css/normalize.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lightgallery.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/helper.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
 </head>
 
-<body>
+<body class="tt-transition tt-boxed tt-smooth-scroll tt-magic-cursor">
+
+
+    <div id="page-transition">
+        <div class="ptr-overlay"></div>
+        <div class="ptr-preloader">
+            <div class="ptr-prel-content">
+                <!-- Hint: You may need to change the img height and opacity to match your logo type. You can do this from the "theme.css" file (find: ".ptr-prel-image"). -->
+                <img src="" class="ptr-prel-image tt-logo-light" alt="Logo">
+            </div> <!-- /.ptr-prel-content -->
+        </div> <!-- /.ptr-preloader -->
+    </div>
+
+    <div id="magic-cursor">
+        <div id="ball"></div>
+    </div>
+
+    <div class="bg-noise"></div>
 
     {% block content %}
     {% endblock %}
 
 
 
+    <script src="{% static 'javascript/jquery.min.js' %}"></script>
+    <script src="{% static 'javascript/gsap.min.js' %}"></script>
+    <script src="{% static 'javascript/ScrollToPlugin.min.js' %}"></script>
+    <script src="{% static 'javascript/ScrollTrigger.min.js' %}"></script>
+    <script src="{% static 'javascript/smooth-scrollbar.js' %}"></script>
+    <script src="{% static 'javascript/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'javascript/imagesloaded.pkgd.min.js' %}"></script>
+    <script src="{% static 'javascript/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'javascript/packery-mode.pkgd.min.js' %}"></script>
+    <script src="{% static 'javascript/lightgallery-all.min.js' %}"></script>
+    <script src="{% static 'javascript/jquery.mousewheel.min.js' %}"></script>
+    <script src="{% static 'javascript/theme.js' %}"></script>
 
 </body>
 

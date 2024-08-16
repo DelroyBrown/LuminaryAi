@@ -3,72 +3,148 @@
 {% load static %}
 
 {% block content %}
-<style>
-    .user-message {
-        color: blue;
-        text-align: left;
-    }
 
-    .assistant-message {
-        color: green;
-        text-align: left;
-    }
-</style>
-
-<h1>Chat Page</h1>
-
-<div id="chatWindow" style="border: 1px solid #ccc; padding: 10px; width: 400px; height: 300px; overflow-y: scroll;">
-    <!-- All chat messages will appear here -->
-</div>
-
-<form id="promptForm" style="margin-top: 20px;">
-    <textarea id="prompt" rows="3" cols="40" placeholder="Enter your prompt here..."></textarea><br>
-    <button type="submit">Submit</button>
-</form>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<script>
+<body id="body" class="">
 
 
+    <main id="body-inner">
 
-    $('#promptForm').on('submit', function (e) {
-        e.preventDefault();
+        <div id="scroll-container">
+            <!-- HEADER -->
+            {% include 'commons/nav.html' %}
 
-        const prompt = $('#prompt').val();  // Get the user's prompt
-        if (prompt.trim() === "") {
-            alert("Please enter a prompt!");
-            return;
-        }
 
-        // Display the user's message in the chat window
-        $('#chatWindow').append(
-            `<p class="user-message"><strong>User:</strong> ${prompt}</p>`
-        );
+            <!-- *************************************
+				*********** Begin content wrap *********** 
+				************************************** -->
+            <div id="content-wrap">
 
-        // Clear the input field after submission
-        $('#prompt').val('');
 
-        // Send the user's prompt to the backend
-        $.ajax({
-            url: '/chat/api/get_gpt_response/',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ prompt: prompt }),
-            success: function (data) {
-                // Display the assistant's response in the chat window
-                $('#chatWindow').append(
-                    `<p class="assistant-message"><strong>Assistant:</strong> ${data.response}</p>`
-                );
+                <!-- PAGE HEADER -->
+                <div id="page-header"
+                    class="ph-full ph-center ph-bg-image ph-image-shadow ph-image-cover-5 ph-content-parallax">
+                    <div class="page-header-inner tt-wrap">
 
-                // Automatically scroll to the bottom of the chat window
-                $('#chatWindow').scrollTop($('#chatWindow')[0].scrollHeight);
-            },
-            error: function (error) {
-                alert('Error: ' + error.responseText);
-            }
-        });
-    });
-</script>
+                        <div class="ph-image">
+                            <div class="ph-image-inner">
+                                <img src="{% static 'images/header-bg.png' %}" alt="Image">
+                            </div>
+                        </div>
+                        <div class="ph-caption">
+                            <div class="ph-categories ph-appear">
+                                <div class="ph-category" style="">Branding</div>
+                            </div>
 
-{% endblock %}
+                            <h2 class="ph-caption-title ph-appear">LuminaryAi</h2>
+
+                        </div>
+                        <div class="project-info-list anim-fadeinup">
+                            <div class="tt-section-inner tt-wrap max-width-1000">
+
+                                <div class="anim-fadeinup text-gray font-alter text-lg text-center">
+                                    <p>LuminaryAi is something I built to help people feel a bit better when they need
+                                        it. You just share how you're feeling, and the app gives you a positive,
+                                        personalized affirmation or quote. It's a simple way to bring a little
+                                        encouragement into your day when you need it most
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <a href="#page-content" class="scroll-down-circle" data-offset="30">
+                        <div class="sdc-inner ph-appear">
+                            <div class="sdc-icon"><i class="fas fa-chevron-down"></i></div>
+                            <svg viewBox="0 0 500 500">
+                                <defs>
+                                    <path
+                                        d="M50,250c0-110.5,89.5-200,200-200s200,89.5,200,200s-89.5,200-200,200S50,360.5,50,250"
+                                        id="textcircle"></path>
+                                </defs>
+                                <text dy="30">
+                                    <textPath xlink:href="#textcircle">Scroll down - Scroll down -</textPath>
+                                </text>
+                            </svg>
+                        </div> <!-- /.sdc-inner -->
+                    </a>
+                    <!-- End scroll down circle -->
+
+
+
+                    <!-- Begin page header share (share buttons are for design purposes only!) 
+						============================= -->
+                    <div class="ph-share">
+                        <div class="ph-share-trigger ph-appear">
+                            <div class="ph-share-text">Share</div>
+                            <div class="ph-share-icon magnetic-item"><i class="fas fa-share-alt"></i></div>
+                        </div> <!-- /.ph-share-trigger -->
+
+                        <div class="ph-share-content">
+                            <div class="ph-share-close cursor-close">
+                                <div class="bg-noise"></div>
+                            </div>
+                            <div class="ph-share-inner">
+                                <h1 class="ph-share-title ph-share-appear">Spread the Word!</h1>
+                                <div class="ph-share-subtitle ph-share-appear">Share this project with your friends
+                                </div>
+
+                                <div class="social-buttons ph-share-appear">
+                                    <ul>
+                                        <li><a href="#0" class="magnetic-item" title="Share on Facebook"><i
+                                                    class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="#0" class="magnetic-item" title="Share on Twitter"><i
+                                                    class="fab fa-twitter"></i></a></li>
+                                        <li><a href="#0" class="magnetic-item" title="Share on Pinterest"><i
+                                                    class="fab fa-pinterest"></i></a></li>
+                                    </ul>
+                                </div> <!-- /.social-buttons -->
+
+                            </div> <!-- /.ph-share-inner -->
+
+                            <div class="ph-share-ghost ph-share-appear">Share</div>
+                        </div> <!-- /.ph-share-content -->
+                    </div>
+                    <!-- End page header share -->
+
+                </div>
+
+
+
+                <!-- *************************************
+					*********** Begin page content *********** 
+					************************************** -->
+                <div id="page-content">
+
+
+              
+
+                    <!-- FORM -->
+                    {% include 'chat/includes/form.html' %}
+
+                  
+
+                </div>
+
+
+
+                <!-- FOOTER -->
+                {% include 'commons/footer.html' %}
+
+
+            </div>
+            <!-- End content wrap -->
+
+        </div>
+        <!-- End scroll container -->
+
+
+    </main>
+    <!-- End body inner -->
+
+
+
+
+    {% endblock %}

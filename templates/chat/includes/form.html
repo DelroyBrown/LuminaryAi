@@ -1,0 +1,167 @@
+{% load static %}
+<style>
+    .tt-chat-box {
+        border: 1px solid #fff;
+        border-radius: 30px;
+        height: 800px;
+        padding: 50px;
+    }
+
+    .user-message {
+        color: blue;
+        text-align: left;
+    }
+
+    .assistant-message {
+        color: green;
+        text-align: left;
+    }
+</style>
+<div style="margin: 100px 0 100px;" class="tt-section">
+    <div class="tt-section-inner tt-wrap">
+
+        <div class="tt-row">
+            <div class="tt-col-lg-12 padding-right-lg-5-p">
+
+                <!-- Begin tt-Heading 
+                ====================== 
+                * Use class "tt-heading-xsm", "tt-heading-sm", "tt-heading-lg", "tt-heading-xlg" or "tt-heading-xxlg" to set caption size (no class = default size).
+                * Use class "tt-heading-stroke" to enable stroke style.
+                * Use class "tt-heading-center" to align tt-Heading to center.
+                * Use prepared helper class "max-width-*" to add custom width if needed. Example: "max-width-800". More info about helper classes can be found in the file "helper.css".
+                -->
+                <div class="tt-heading tt-heading-center tt-heading-lg anim-fadeinup" style="">
+                    <h3 class="tt-heading-subtitle text-gray">(Put something here)</h3>
+                    <h2 class="tt-heading-title">How Are You Feeling Today?</h2>
+                </div>
+                <!-- End tt-Heading -->
+
+
+
+            </div> <!-- /.tt-col -->
+
+
+        </div> <!-- /.tt-row -->
+
+        <div class="tt-row">
+            <div class="tt-col-lg-12">
+
+                <!-- Begin form 
+                ================ 
+                * Use class "tt-form-filled" or "tt-form-minimal" to change form style.
+                * Use class "tt-form-sm" or "tt-form-lg" to change form size (no class = default size).
+                -->
+                <form id="promptForm" class="tt-form-filled anim-fadeinup">
+
+
+                    <div class="tt-form-group">
+                        <textarea id="prompt" style="border: 1px solid #fff;"
+                            class="magnetic-item tt-form-control tt-form-lg" rows="12" name="Message" placeholder=""
+                            required=""></textarea>
+                    </div>
+
+                    <div class="tt-btn tt-btn-light-outline">
+                        <button type="submit" data-hover="Send Message">Send Message</button>
+                    </div>
+                </form>
+                <!-- End form -->
+
+
+                <div id="chatWindow" class="tt-section padding-top-xlg-180 padding-left-sm-3-p padding-right-sm-3-p">
+         
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- /.tt-section-inner -->
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+
+
+
+    $('#promptForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const prompt = $('#prompt').val();  // Get the user's prompt
+        if (prompt.trim() === "") {
+            alert("Please enter a prompt!");
+            return;
+        }
+
+        // Display the user's message in the chat window
+        $('#chatWindow').append(
+            // `<p class="user-message"><strong>User:</strong> ${prompt}</p>`
+            `<div class="tt-row anim-fadeinup">
+                            <div class="tt-col-lg-4 padding-right-md-5-p">
+
+                       
+                                <div class="tt-heading tt-heading-xsm margin-bottom-60 anim-fadeinup" style="">
+                                    <h2 class="tt-heading-title">You:</h2>
+                                    <!-- <h3 class="tt-heading-subtitle text-gray">Subtitle</h3> -->
+                                </div>
+                                <!-- End tt-Heading -->
+
+                            </div> <!-- /.tt-col -->
+
+                            <div class="tt-col-lg-8">
+
+                                <div class="anim-fadeinup text-gray" style="">
+                                    <p>${prompt}.</p>
+
+                                </div>
+
+                            </div> 
+                        </div>
+                        `
+        );
+
+        // Clear the input field after submission
+        $('#prompt').val('');
+
+        // Send the user's prompt to the backend
+        $.ajax({
+            url: '/chat/api/get_gpt_response/',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ prompt: prompt }),
+            success: function (data) {
+                // Display the assistant's response in the chat window
+                $('#chatWindow').append(
+                    // `<p class="assistant-message"><strong>Assistant:</strong> ${data.response}</p>`
+                    `<div class="tt-row anim-fadeinup">
+                            <div class="tt-col-lg-4 padding-right-md-5-p">
+
+                       
+                                <div class="tt-heading tt-heading-xsm anim-fadeinup" style="">
+                                    <h2 class="tt-heading-title">LuminaryAi:</h2>
+                                    <!-- <h3 class="tt-heading-subtitle text-gray">Subtitle</h3> -->
+                                </div>
+                                <!-- End tt-Heading -->
+
+                            </div> <!-- /.tt-col -->
+
+                            <div class="tt-col-lg-8">
+
+                                <div class="anim-fadeinup text-gray" style="">
+                                    <p>${data.response}.</p>
+
+                                </div>
+
+                            </div> 
+                        </div>
+                        <hr>
+                        `
+                );
+
+                // Automatically scroll to the bottom of the chat window
+                $('#chatWindow').scrollTop($('#chatWindow')[0].scrollHeight);
+            },
+            error: function (error) {
+                alert('Error: ' + error.responseText);
+            }
+        });
+    });
+</script>
