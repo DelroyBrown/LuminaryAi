@@ -1,0 +1,1 @@
+web: gnicorn LuminaryAi_base.wsgi:application
