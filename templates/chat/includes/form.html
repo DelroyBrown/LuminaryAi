@@ -59,12 +59,14 @@
         /* 1 second fade-in */
     }
 </style>
+<!-- Add Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Your existing form structure -->
 <div style="margin: 100px 0 100px;" class="tt-section">
     <div class="tt-section-inner tt-wrap">
-
         <div class="tt-row">
             <div class="tt-col-lg-12 padding-right-lg-5-p">
-
                 <div class="tt-heading tt-heading-center tt-heading-lg anim-fadeinup" style="">
                     <h2 class="tt-heading-title">How Are You Feeling Today?</h2>
                     <h3 class="tt-heading-subtitle text-gray">Simply share how you're feeling. For example, <em>"I'm
@@ -75,60 +77,34 @@
                         uplifting
                         response tailored to your emotions.</h3>
                 </div>
-                <!-- End tt-Heading -->
-
-
-
-            </div> <!-- /.tt-col -->
-
-
-        </div> <!-- /.tt-row -->
+            </div>
+        </div>
 
         <div class="tt-row">
             <div class="tt-col-lg-12">
-
-                <!-- Begin form 
-                ================ 
-                * Use class "tt-form-filled" or "tt-form-minimal" to change form style.
-                * Use class "tt-form-sm" or "tt-form-lg" to change form size (no class = default size).
-                -->
                 <form id="promptForm" class="tt-form-filled anim-fadeinup">
-
-
                     <div class="tt-form-group">
                         <textarea id="prompt" style="border: 1px solid #fff; padding: 25px;"
                             class="magnetic-item tt-form-control tt-form-lg" rows="12" name="Message" placeholder=""
                             required=""></textarea>
                     </div>
-
                     <div class="tt-btn tt-btn-light-outline">
                         <button type="submit" data-hover="Send Message">Send Message</button>
                     </div>
                 </form>
-                <!-- End form -->
 
                 <div class="tt-section padding-top-xlg-180 padding-left-sm-3-p padding-right-sm-3-p">
                     <div class="tt-section-inner tt-wrap max-width-1000">
-
-                        <div id="chatWindow" class="anim-fadeinup font-alter text-xxlg text-center" style="">
-
-                        </div>
-
+                        <div id="chatWindow" class="anim-fadeinup font-alter text-xxlg text-center" style=""></div>
                     </div>
                 </div>
-
-
-                <div id="chatWindow" class="tt-section padding-top-xlg-180 padding-left-sm-3-p padding-right-sm-3-p">
-                    <!-- MESSAGES APPEARS HERE -->
-                </div>
-
             </div>
         </div>
-    </div> <!-- /.tt-section-inner -->
+    </div>
 </div>
 
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script>
     $('#promptForm').on('submit', function (e) {
         e.preventDefault();
@@ -163,17 +139,15 @@
                 response = response.replace('##quote_start##', '<br><span class="motivational-quote">');
                 response = response.replace('##quote_end##', '</span><br>');
 
-                // Display the assistant's response in the chat window
+                // Append the response and speaker icon
                 $('#chatWindow').append(`
                     <div class="ai-response">
                         <img class="response-img" src="{% static 'images/logo.png' %}">
                         <small class="text-gray">LuminaryAi</small>
                         <p class="fade-in">${response}</p>
-                        <!-- Add an audio player for the generated speech -->
-                        <audio controls>
-                            <source src="${data.audio_url}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
+                        <!-- Speaker icon and hidden audio tag -->
+                        <i class="fas fa-volume-up speaker-icon" style="cursor: pointer; font-size: 24px;" data-audio-url="${data.audio_url}"></i>
+                        <audio class="response-audio" src="${data.audio_url}" hidden></audio>
                     </div>
                     <hr>
                 `);
@@ -185,5 +159,25 @@
                 alert('Error: ' + error.responseText);
             }
         });
+    });
+
+    // Play/Stop button toggle for audio
+    $(document).on('click', '.speaker-icon', function () {
+        const audioElement = $(this).siblings('audio')[0];
+        const isPlaying = !audioElement.paused;
+
+        // Toggle play and stop icons
+        if (isPlaying) {
+            audioElement.pause();
+            $(this).removeClass('fa-stop').addClass('fa-volume-up');  // Switch to speaker icon
+        } else {
+            audioElement.play();
+            $(this).removeClass('fa-volume-up').addClass('fa-stop');  // Switch to stop icon
+        }
+
+        // When the audio ends, revert back to the speaker icon
+        audioElement.onended = () => {
+            $(this).removeClass('fa-stop').addClass('fa-volume-up');
+        };
     });
 </script>
