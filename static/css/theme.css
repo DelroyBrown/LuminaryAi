@@ -6685,12 +6685,12 @@ figcaption a:hover {
     display: block;
     width: 100%;
     background-color: transparent;
-    padding: 5px 15px;
+    padding: 25px;
     font-size: 17px;
     font-weight: normal;
     color: #FFF;
     border: 1px solid rgb(136 136 136 / 65%);
-    border-radius: 100px;
+    border-radius: 20px;
     outline: none;
     resize: none !important;
 }
@@ -6987,7 +6987,7 @@ input[type=range] {
 }
 /* form lg */
 .tt-form-lg .tt-form-control:not(textarea):not([size]), .tt-form-control.tt-form-lg, .tt-form-btn-inside .tt-form-control.tt-form-lg + button {
-    height: 70px !important;
+    height: 150px !important;
 }
 .tt-form-lg .tt-form-btn-inside button {
     height: 68px !important;
