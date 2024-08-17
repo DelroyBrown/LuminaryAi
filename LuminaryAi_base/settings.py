@@ -1,6 +1,7 @@
 # LuminaryAi_base\settings.py
 import os
 from pathlib import Path
+import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -66,6 +67,13 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# DATABASES = {
+#     'default' : dj_database_url.parse('postgres://uegks54sp7va37:p4b1f857bf95160f0833b14bc0480a2f038fbdb5b2ac115c880e7c65fce650170@c7u1tn6bvvsodf.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/da6992ots6hhdc')
+
+# }
+
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
