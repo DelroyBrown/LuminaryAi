@@ -1,1 +1,1 @@
-web: gnicorn LuminaryAi_base.wsgi:application
+web: gunicorn LuminaryAi_base.wsgi:application
