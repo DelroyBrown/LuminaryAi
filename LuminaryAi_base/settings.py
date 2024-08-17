@@ -12,9 +12,11 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 GOOGLE_CLOUD_API_KEY = os.getenv("GOOGLE_CLOUD_API_KEY")
 
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY", '')
 
-DEBUG = os.getenv("DEBUG")
+
+
+DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = ["luminary-ai-77e109615963.herokuapp.com/", "localhost"]
 
