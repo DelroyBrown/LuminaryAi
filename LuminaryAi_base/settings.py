@@ -8,6 +8,8 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+GOOGLE_CLOUD_API_KEY = os.getenv('GOOGLE_CLOUD_API_KEY')
+
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 

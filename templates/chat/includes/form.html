@@ -121,19 +121,19 @@
     </div> <!-- /.tt-section-inner -->
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $('#promptForm').on('submit', function (e) {
         e.preventDefault();
 
-        const prompt = $('#prompt').val();  // Get the user's prompt
+        const prompt = $('#prompt').val();
         if (prompt.trim() === "") {
             alert("Please enter a prompt!");
             return;
         }
 
-        // Display the user's message in the chat window with fade-in class
+        // Display the user's message in the chat window
         $('#chatWindow').append(`
             <div class="ai-response">
                 <small class="text-gray">You</small>
@@ -153,16 +153,21 @@
             success: function (data) {
                 let response = data.response;
 
-                // Replace the custom markers with a span to highlight the Bible verse
+                // Replace custom markers with a span to highlight the Bible verse
                 response = response.replace('##quote_start##', '<br><span class="motivational-quote">');
                 response = response.replace('##quote_end##', '</span><br>');
 
-                // Display the assistant's response in the chat window with fade-in class
+                // Display the assistant's response in the chat window
                 $('#chatWindow').append(`
                     <div class="ai-response">
                         <img class="response-img" src="{% static 'images/logo.png' %}">
                         <small class="text-gray">LuminaryAi</small>
                         <p class="fade-in">${response}</p>
+                        <!-- Add an audio player for the generated speech -->
+                        <audio controls>
+                            <source src="${data.audio_url}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
                     </div>
                     <hr>
                 `);

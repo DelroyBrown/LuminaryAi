@@ -1,7 +1,9 @@
 # LuminaryAi_chat\views.py
-import openai
-import json
 import os
+import json
+import base64
+import openai
+import requests
 from django.shortcuts import render
 from django.conf import settings
 from django.http import JsonResponse
@@ -74,7 +76,6 @@ def get_gpt_response(request):
             if not user_prompt:
                 return JsonResponse({"error": "Prompt is required"}, status=400)
 
-            # Modify the prompt to request a Bible verse in the response
             enhanced_prompt = enhance_prompt(user_prompt)
 
             if "conversation" not in request.session:
@@ -84,7 +85,6 @@ def get_gpt_response(request):
                 {"role": "user", "content": enhanced_prompt}
             )
 
-            # Send the enhanced prompt to ChatGPT
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=request.session["conversation"],
@@ -93,15 +93,48 @@ def get_gpt_response(request):
             )
 
             gpt_response = response.choices[0].message.content
-
             request.session["conversation"].append(
                 {"role": "assistant", "content": gpt_response}
             )
 
-            return JsonResponse({"response": gpt_response})
+            # Generate speech using Google Cloud TTS
+            audio_path = generate_speech_from_text(gpt_response)
+
+            return JsonResponse(
+                {"response": gpt_response, "audio_url": "/static/output.mp3"}
+            )
 
         except Exception as e:
-            print(f"Error: {e}")
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+
+def generate_speech_from_text(text):
+    api_key = settings.GOOGLE_CLOUD_API_KEY
+
+    url = f"https://texttospeech.googleapis.com/v1/text:synthesize?key={api_key}"
+    request_body = {
+        "input": {"text": text},
+        "voice": {
+            "languageCode": "en-GB",
+            "name": "en-GB-News-L",
+        },
+        "audioConfig": {"audioEncoding": "MP3"},
+    }
+
+    response = requests.post(url, json=request_body)
+
+    if response.status_code == 200:
+        audio_content = json.loads(response.content)["audioContent"]
+
+        # Decode base64 audio content and write it to the output.mp3 file
+        audio_path = os.path.join(settings.BASE_DIR, "static", "output.mp3")
+        with open(audio_path, "wb") as audio_file:
+            audio_file.write(base64.b64decode(audio_content))
+
+        return audio_path
+    else:
+        raise Exception(f"Failed to generate speech: {response.content}")
