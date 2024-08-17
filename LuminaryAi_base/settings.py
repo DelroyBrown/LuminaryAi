@@ -17,7 +17,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "")
 
 DEBUG = "DEVELOPMENT" in os.environ
 
-ALLOWED_HOSTS = ["luminary-ai-77e109615963.herokuapp.com/", "localhost"]
+ALLOWED_HOSTS = ["luminary-ai-77e109615963.herokuapp.com", "localhost"]
 
 
 INSTALLED_APPS = [
