@@ -110,8 +110,6 @@ def get_gpt_response(request):
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
-
-
 def generate_speech_from_text(text):
     api_key = settings.GOOGLE_CLOUD_API_KEY
 
