@@ -146,7 +146,7 @@
 
         // Send the user's prompt to the backend
         $.ajax({
-            url: '/chat/api/get_gpt_response/',
+            url: '/api/get_gpt_response/',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ prompt: prompt }),
@@ -154,8 +154,8 @@
                 let response = data.response;
 
                 // Replace the custom markers with a span to highlight the Bible verse
-                response = response.replace('##quote_start##', '<br><br><span class="motivational-quote">');
-                response = response.replace('##quote_end##', '</span><br><br>');
+                response = response.replace('##quote_start##', '<br><span class="motivational-quote">');
+                response = response.replace('##quote_end##', '</span><br>');
 
                 // Display the assistant's response in the chat window with fade-in class
                 $('#chatWindow').append(`
